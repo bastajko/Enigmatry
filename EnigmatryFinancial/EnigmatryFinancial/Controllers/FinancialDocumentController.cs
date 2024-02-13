@@ -3,6 +3,7 @@ using EnigmatryFinancial.Models.Response;
 using EnigmatryFinancial.Services;
 using EnigmatryFinancial.Utils;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace EnigmatryFinancial.Controllers
 {
@@ -21,12 +22,12 @@ namespace EnigmatryFinancial.Controllers
         }
 
         [HttpPost("retrieve")]
-        public IActionResult RetrieveDocument([FromBody] DocumentRetrievalRequest request)
+        public async Task<IActionResult> RetrieveDocumentAsync([FromBody] DocumentRetrievalRequest request)
         {
             try
             {
-                FinancialDocumentResponse response = _documentRetrievalService.RetrieveDocument(request);
-                return Ok(response);
+                string jsonResponse = await _documentRetrievalService.RetrieveDocument(request).ConfigureAwait(false);
+                return Ok(jsonResponse);
             }
             catch (BadHttpRequestException ex)
             {
@@ -44,8 +45,9 @@ namespace EnigmatryFinancial.Controllers
             }
             catch (Exception ex)
             {
+                // TODO: Check if status code needs to be changed.
                 this._logger.LogError(ex.Message);
-                return StatusCode(500, "An error occurred while processing the request.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing the request.");
             }
         }
     }

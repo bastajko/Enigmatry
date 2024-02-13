@@ -1,5 +1,6 @@
 using EnigmatryFinancial.Data;
 using EnigmatryFinancial.Middlewares;
+using EnigmatryFinancial.Repositories;
 using EnigmatryFinancial.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,9 +14,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add service registration
-builder.Services.AddScoped<IFinancialDocumentRetrievalService, FinancialDocumentService>();
+builder.Services.AddScoped<IFinancialDocumentRetrievalService, FinancialDocumentRetrievalService>();
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<ITenantWhitelistingService, TenantWhitelistingService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IFinancialDocumentService, FinancialDocumentService>();
+builder.Services.AddScoped<IFinancialDocumentRepository, FinancialDocumentRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ITenantService, TenantService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+
 
 var connectionString = string.Empty;
 if (builder.Environment.IsDevelopment())

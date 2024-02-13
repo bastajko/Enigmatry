@@ -2,6 +2,7 @@
 using EnigmatryFinancial.Models.Request;
 using EnigmatryFinancial.Models.Response;
 using System.Net;
+using System.Text.Json;
 
 namespace EnigmatryFinancial.Services
 {
@@ -23,7 +24,7 @@ namespace EnigmatryFinancial.Services
             _clientService = clientService;
             _financialDocumentService = financialDocumentService;
         }
-        public async Task<FinancialDocumentResponse> RetrieveDocument(DocumentRetrievalRequest request)
+        public async Task<string> RetrieveDocument(DocumentRetrievalRequest request)
         {
             // Step 1: Validate Product Code
             await _productService.AssertProductSupported(request.ProductCode).ConfigureAwait(false);
@@ -47,19 +48,22 @@ namespace EnigmatryFinancial.Services
             }
 
             // Step 6: Retrieve Financial Document
-            var financialDocument = _financialDocumentService.GetFinancialDocument(request.TenantId, request.DocumentId);
+            string financialDocumentJson = await _financialDocumentService.RetrieveFinancialDocumentAsync(request.TenantId, request.DocumentId, request.ProductCode).ConfigureAwait(false);
+
+
+            // financialDocument = AppendToJsonString(financialDocument, "NewProperty1", "Value1");
 
             // Step 7: Enrich Response Model
-            var response = new FinancialDocumentResponse
+            /*var response = new FinancialDocumentResponse
             {
                 Data = financialDocument,
                 Company = companyInfo
-            };
+            };*/
 
             // Step 8: Financial Data Anonymization
-            _financialDocumentService.AnonymizeFinancialData(response);
+            // _financialDocumentService.AnonymizeFinancialData(response);
 
-            return response;
+            return financialDocumentJson;
 
         }
     }

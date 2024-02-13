@@ -5,6 +5,6 @@ namespace EnigmatryFinancial.Services
 {
     public interface IFinancialDocumentRetrievalService
     {
-        Task<FinancialDocumentResponse> RetrieveDocument(DocumentRetrievalRequest request);
+        Task<string> RetrieveDocument(DocumentRetrievalRequest request);
     }
 }

@@ -15,14 +15,10 @@ namespace EnigmatryFinancial.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
+            // TODO: remove this from middleware
             // Check if the product code is supported
             string productCode = context.Request.Query["productCode"];
-            if (!_productService.IsProductSupported(productCode))
-            {
-                // TODO: Add logging
-                context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                return;
-            }
+            await _productService.AssertProductSupported(productCode).ConfigureAwait(false);
 
             // If service check passes, proceed to the next middleware in the pipeline
             await _next(context);

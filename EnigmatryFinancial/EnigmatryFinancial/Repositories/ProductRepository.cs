@@ -14,7 +14,7 @@ namespace EnigmatryFinancial.Repositories
 
         public async Task<bool> IsProductSupported(string productCode)
         {
-            return await _context.Products.AnyAsync(p => p.Code == productCode).ConfigureAwait(false);
+            return await _context.Products.AnyAsync(p => p.ProductCode == productCode).ConfigureAwait(false);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace EnigmatryFinancial.Repositories
             return retDoc;
         }
 
-        public async Task<FinancialDocumentDataExtended> GetDocumentForProductBAsync(Guid tenantId, Guid documentId)
+        public async Task<FinancialDocumentData> GetDocumentForProductBAsync(Guid tenantId, Guid documentId)
         {
             var retDoc = await this._context.Documents.Where(d => d.TenantId == tenantId && d.Id == documentId)
                .Select(d => new FinancialDocumentDataExtended
@@ -57,12 +57,5 @@ namespace EnigmatryFinancial.Repositories
 
             return retDoc;
         }
-
-        public FinancialDocument GetFinancialDocument(Guid tenantId, Guid documentId)
-        {
-            return _context.Documents.FirstOrDefault(d => d.TenantId == tenantId && d.Id == documentId);
-        }
-
-
     }
 }
