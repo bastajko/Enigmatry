@@ -2,6 +2,6 @@
 {
     public interface IProductService
     {
-        bool IsProductSupported(string productCode);
+        Task AssertProductSupported(string productCode);
     }
 }

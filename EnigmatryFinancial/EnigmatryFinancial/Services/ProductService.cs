@@ -1,14 +1,22 @@
-﻿namespace EnigmatryFinancial.Services
+﻿using EnigmatryFinancial.Repositories;
+using System.Net;
+
+namespace EnigmatryFinancial.Services
 {
     public class ProductService : IProductService
     {
-        // Simulated list of supported product codes
-        private readonly HashSet<string> _supportedProducts = new HashSet<string> { "ProductA", "ProductB" };
+        private readonly IProductRepository _productRepository;
 
-        public bool IsProductSupported(string productCode)
+        public ProductService(IProductRepository productRepository)
         {
-            // Check if the provided product code is in the list of supported products
-            return _supportedProducts.Contains(productCode);
-        } 
+            _productRepository = productRepository;
+        }
+        public async Task AssertProductSupported(string productCode)
+        {
+            if(! await _productRepository.IsProductSupported(productCode).ConfigureAwait(false))
+            {
+                throw new BadHttpRequestException("Product is not supported", (int)HttpStatusCode.Forbidden);
+            }
+        }
     }
 }

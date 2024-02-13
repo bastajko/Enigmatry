@@ -13,7 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add service registration
-builder.Services.AddScoped<IFinancialDocumentService, FinancialDocumentService>();
+builder.Services.AddScoped<IFinancialDocumentRetrievalService, FinancialDocumentService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ITenantWhitelistingService, TenantWhitelistingService>();
 

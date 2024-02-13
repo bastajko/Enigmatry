@@ -5,12 +5,12 @@ namespace EnigmatryFinancial.Middlewares
     public class TenantWhitelistingMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly ITenantWhitelistingService _tenantWhitelistingService;
+        private readonly ITenantService _tenantService;
 
-        public TenantWhitelistingMiddleware(RequestDelegate next, ITenantWhitelistingService tenantWhitelistingService)
+        public TenantWhitelistingMiddleware(RequestDelegate next, ITenantService tenantWhitelistingService)
         {
             _next = next;
-            _tenantWhitelistingService = tenantWhitelistingService;
+            _tenantService = tenantWhitelistingService;
         }
 
         public async Task Invoke(HttpContext context)
@@ -24,13 +24,7 @@ namespace EnigmatryFinancial.Middlewares
             }
 
             // Check if the tenant is whitelisted
-            bool isWhitelisted = await _tenantWhitelistingService.IsTenantWhitelistedAsync(tenantId);
-            if (!isWhitelisted)
-            {
-                // TODO: Add logging
-                context.Response.StatusCode = StatusCodes.Status403Forbidden;
-                return;
-            }
+            _tenantService.AssertTenantWhitelisted(tenantId);
 
             // If tenant is whitelisted, proceed to the next middleware in the pipeline
             await _next(context);

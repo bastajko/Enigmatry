@@ -5,9 +5,9 @@ namespace EnigmatryFinancial.Models.Response
     public class FinancialDocumentResponse
     {
         [JsonPropertyName("data")]
-        public FinancialDocumentData Data { get; set; }
+        public required FinancialDocumentData Data { get; set; }
 
         [JsonPropertyName("company")]
-        public CompanyResponse Company { get; set; }
+        public required CompanyResponse Company { get; set; }
     }
 }

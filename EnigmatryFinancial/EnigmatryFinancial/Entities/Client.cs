@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EnigmatryFinancial.Utils;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -8,7 +9,16 @@ namespace EnigmatryFinancial.Entities
     {
         [Required]
         [ForeignKey(nameof(Tenant.Id))]
+        [JsonPropertyName("tenantId")]
         public Guid TenantId { get; set; }
+
+        [Required]
+        [JsonPropertyName("clientVAT")]
+        public required string ClientVAT { get; set; }
+
+        [Required]
+        [JsonPropertyName("registrationNumber")]
+        public required string RegistrationNumber { get; set; }
 
         [Required]
         [JsonPropertyName("name")]
@@ -23,10 +33,18 @@ namespace EnigmatryFinancial.Entities
         [JsonPropertyName("address")]
         public string Address { get; set; } = string.Empty;
 
-        [JsonPropertyName("clientVAT")]
-        public required string ClientVAT { get; set; }
+        [JsonPropertyName("website")]
+        public string Website { get; set; } = string.Empty;
+
+        [JsonConverter(typeof(CompanyTypeConverter))]
+        public CompanyTypeEnum CompanyType { get; set; }
 
         [JsonPropertyName("isWhitelisted")]
         public bool IsWhitelisted { get; set; }
+
+        // Navigation property
+        [JsonIgnore]
+        [ForeignKey("TenantId")]
+        public required Tenant Tenant { get; set; }
     }
 }
