@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using EnigmatryFinancial.Models;
+using System.Text.Json.Serialization;
 
 namespace EnigmatryFinancial.Entities
 {
@@ -12,6 +13,9 @@ namespace EnigmatryFinancial.Entities
         public bool IsWhitelisted { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<Client> Clients { get; set; }
+        public virtual ICollection<Client> Clients { get; set; } = new List<Client>();
+
+        [JsonIgnore]
+        public virtual ICollection<FinancialDocument> FinancialDocuments { get; set; } = new List<FinancialDocument>();
     }
 }

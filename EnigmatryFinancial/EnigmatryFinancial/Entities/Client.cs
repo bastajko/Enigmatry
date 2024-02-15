@@ -1,4 +1,5 @@
-﻿using EnigmatryFinancial.Utils;
+﻿using EnigmatryFinancial.Models;
+using EnigmatryFinancial.Utils;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -45,6 +46,9 @@ namespace EnigmatryFinancial.Entities
         // Navigation property
         [JsonIgnore]
         [ForeignKey("TenantId")]
-        public required Tenant Tenant { get; set; }
+        public Tenant? Tenant { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<FinancialDocument>? FinancialDocuments { get; set; }
     }
 }

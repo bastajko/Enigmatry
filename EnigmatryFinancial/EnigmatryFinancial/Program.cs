@@ -13,18 +13,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Add service registration
-builder.Services.AddScoped<IFinancialDocumentRetrievalService, FinancialDocumentRetrievalService>();
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<ITenantService, TenantService>();
-builder.Services.AddScoped<IClientService, ClientService>();
-builder.Services.AddScoped<IFinancialDocumentService, FinancialDocumentService>();
-builder.Services.AddScoped<IFinancialDocumentRepository, FinancialDocumentRepository>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<ITenantService, TenantService>();
-builder.Services.AddScoped<IClientService, ClientService>();
-
-
 var connectionString = string.Empty;
 if (builder.Environment.IsDevelopment())
 {
@@ -37,10 +25,23 @@ else if (builder.Environment.IsProduction())
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(connectionString));
 
+// Add service registration
+
+builder.Services.AddScoped<IFinancialDocumentRepository, FinancialDocumentRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ITenantRepository, TenantRepository>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ITenantService, TenantService>();
+builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IFinancialDocumentService, FinancialDocumentService>();
+builder.Services.AddScoped<IFinancialDocumentRetrievalService, FinancialDocumentRetrievalService>();
+
 var app = builder.Build();
 
-app.UseMiddleware<ProductCheckMiddleware>();
-app.UseMiddleware<TenantWhitelistingMiddleware>();
+// TODO: add comment about middleware usage
+// app.UseMiddleware<ProductCheckMiddleware>();
+// app.UseMiddleware<TenantWhitelistingMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -24,7 +24,7 @@ namespace EnigmatryFinancial.Middlewares
             }
 
             // Check if the tenant is whitelisted
-            _tenantService.AssertTenantWhitelisted(tenantId);
+            await _tenantService.AssertTenantWhitelisted(tenantId).ConfigureAwait(false);
 
             // If tenant is whitelisted, proceed to the next middleware in the pipeline
             await _next(context);

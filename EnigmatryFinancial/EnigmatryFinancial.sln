@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnigmatryFinancial", "EnigmatryFinancial\EnigmatryFinancial.csproj", "{20F5AA17-27AD-40F7-AA86-60C5FBF36B83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EnigmatryFinancial", "EnigmatryFinancial\EnigmatryFinancial.csproj", "{20F5AA17-27AD-40F7-AA86-60C5FBF36B83}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnigmatryFinancialTests", "EnigmatryFinancialTests\EnigmatryFinancialTests.csproj", "{980E129A-05E3-4CC3-9E6C-D7BFDE37B5CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{20F5AA17-27AD-40F7-AA86-60C5FBF36B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20F5AA17-27AD-40F7-AA86-60C5FBF36B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20F5AA17-27AD-40F7-AA86-60C5FBF36B83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{980E129A-05E3-4CC3-9E6C-D7BFDE37B5CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{980E129A-05E3-4CC3-9E6C-D7BFDE37B5CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{980E129A-05E3-4CC3-9E6C-D7BFDE37B5CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{980E129A-05E3-4CC3-9E6C-D7BFDE37B5CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

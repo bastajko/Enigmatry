@@ -22,17 +22,21 @@ namespace EnigmatryFinancial.Repositories
 
         public async Task<(Guid clientId, string clientVat)> GetClientIdAndClientVatAsync(Guid tenantId, Guid documentId)
         {
-            var clientDetails = await _context.Documents
-                .Where(d => d.TenantId == tenantId && d.Id == documentId)
-                .Select(d => new { d.Client.Id, d.Client.ClientVAT })
-                .FirstOrDefaultAsync().ConfigureAwait(false);
+            // TODO: change this
+            try
+            {
+                var clientDetails = await _context.Documents
+                    .Where(d => d.TenantId == tenantId && d.Id == documentId)
+                    .Select(d => new { d.Client.Id, d.Client.ClientVAT })
+                    .FirstOrDefaultAsync().ConfigureAwait(false);
 
-            if (clientDetails == null)
+
+                return (clientDetails.Id, clientDetails.ClientVAT);
+            }
+            catch(NullReferenceException)
             {
                 throw new BadHttpRequestException("Not able to retrieve Client Details", (int)HttpStatusCode.NotFound);
             }
-
-            return (clientDetails.Id, clientDetails.ClientVAT);
         }
 
         public async Task<(CompanyTypeEnum companyType, string registrationNumber)> GetClientDetailsAsync(string clientVat)

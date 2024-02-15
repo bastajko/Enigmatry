@@ -4,19 +4,19 @@ namespace EnigmatryFinancial.Models.Response
 {
     public class TransactionResponse
     {
-        [JsonPropertyName("transaction_id")]
-        public string TransactionId { get; set; }
+        [JsonPropertyName("transactionId")]
+        public Guid TransactionId { get; set; }
 
         [JsonPropertyName("amount")]
         public decimal Amount { get; set; }
 
         [JsonPropertyName("date")]
-        public string Date { get; set; } // Assuming date is represented as string for simplicity
+        public string Date { get; set; } = string.Empty; // Assuming date is represented as string for simplicity
 
         [JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         [JsonPropertyName("category")]
-        public string Category { get; set; }
+        public string Category { get; set; } = string.Empty;
     }
 }

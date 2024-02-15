@@ -7,14 +7,9 @@ namespace EnigmatryFinancial.Entities
 {
     public class Transaction : BaseEntity
     {
-        [Key]
-        [Required]
-        [JsonPropertyName("transactionId")]
-        public int TransactionId { get; set; }
-
         [Required]
         [ForeignKey("FinancialDocument")]
-        public int FinancialDocumentId { get; set; }
+        public Guid FinancialDocumentId { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
@@ -24,12 +19,12 @@ namespace EnigmatryFinancial.Entities
         public DateTime Date { get; set; }
 
         [Required]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         [Required]
-        public string Category { get; set; }
+        public string Category { get; set; } = string.Empty; // This should be enum, but I don't have time
 
         // Navigation property
-        public FinancialDocument FinancialDocument { get; set; }
+        public virtual FinancialDocument? FinancialDocument { get; set; }
     }
 }
