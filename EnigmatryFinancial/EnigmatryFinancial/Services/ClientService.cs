@@ -19,12 +19,12 @@ namespace EnigmatryFinancial.Services
             return await _clientRepository.GetClientIdAndClientVatAsync(tenantId, documentId).ConfigureAwait(false);
         }
 
-        public async Task AssertClientWhitelisted(Guid tenantId, string clientId)
+        public async Task AssertClientWhitelisted(Guid tenantId, Guid clientId)
         {
 
             if(!(await _clientRepository.IsClientIdWhitelisted(tenantId, clientId).ConfigureAwait(false)))
             {
-                throw new BadHttpRequestException("Client isn't whitelisted", (int)HttpStatusCode.Forbidden);
+                throw new BadHttpRequestException($"Client with clientId: {clientId} isn't whitelisted", StatusCodes.Status403Forbidden);
             }
         }
 

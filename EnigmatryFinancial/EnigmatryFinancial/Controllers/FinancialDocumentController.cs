@@ -1,4 +1,4 @@
-﻿using EnigmatryFinancial.Models.Request;
+﻿using EnigmatryFinancial.Http;
 using EnigmatryFinancial.Services;
 using EnigmatryFinancial.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -19,34 +19,45 @@ namespace EnigmatryFinancial.Controllers
             _logger = logger;
         }
 
-        [HttpPost("retrieve")]
-        public async Task<IActionResult> RetrieveDocumentAsync([FromBody] DocumentRetrievalRequest request)
+        [HttpGet("retrieve/{documentId}/{productCode}")]
+        public async Task<IActionResult> RetrieveDocumentAsync(Guid documentId, string productCode)
         {
-            try
+            using (_logger.BeginScope($"{nameof(RetrieveDocumentAsync)} documentId: {documentId} productCode: {productCode}"))
             {
-                string jsonResponse = await _documentRetrievalService.RetrieveDocument(request).ConfigureAwait(false);
-                return Ok(jsonResponse);
-            }
-            catch (BadHttpRequestException ex)
-            {
-                if (Util.IsDevelopmentEnvironment())
+
+                if (documentId == Guid.Empty || productCode == string.Empty)
                 {
-                    // Log the full stack trace only in development environment
-                    this._logger.LogError(ex.Message, ex.StackTrace);
-                }
-                else
-                {
-                    this._logger.LogError(ex.Message);
+                    return BadRequest("Not valid documentId or productCode");
                 }
 
-                return StatusCode(ex.StatusCode, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                // TODO: Check if status code needs to be changed.
-                this._logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing the request.");
+                try
+                {
+                    Guid tenantId = HttpContext.GetTenantId();
+
+                    string jsonResponse = await _documentRetrievalService.RetrieveDocument(tenantId, documentId, productCode).ConfigureAwait(false);
+                    return Ok(jsonResponse);
+                }
+                catch (BadHttpRequestException ex)
+                {
+                    if (Util.IsDevelopmentEnvironment())
+                    {
+                        // Log the full stack trace only in development environment
+                        this._logger.LogError(ex.Message, ex.StackTrace);
+                    }
+                    else
+                    {
+                        this._logger.LogError(ex.Message);
+                    }
+
+                    return StatusCode(ex.StatusCode, ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    this._logger.LogError(ex.Message);
+                    return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing the request.");
+                }
             }
         }
     }
 }
+

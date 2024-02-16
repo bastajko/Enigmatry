@@ -1,10 +1,7 @@
-﻿using EnigmatryFinancial.Models.Request;
-using EnigmatryFinancial.Models.Response;
-
-namespace EnigmatryFinancial.Services
+﻿namespace EnigmatryFinancial.Services
 {
     public interface IFinancialDocumentRetrievalService
     {
-        Task<string> RetrieveDocument(DocumentRetrievalRequest request);
+        Task<string> RetrieveDocument(Guid tenantId, Guid documentId, string productCode);
     }
 }

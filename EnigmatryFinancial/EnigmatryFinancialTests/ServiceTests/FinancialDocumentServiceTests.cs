@@ -1,27 +1,34 @@
-﻿using EnigmatryFinancial.Data;
+﻿using EnigmatryFinancial.Controllers;
+using EnigmatryFinancial.Entities.Enums;
 using EnigmatryFinancial.Repositories;
 using EnigmatryFinancial.Services;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NSubstitute.Core.Arguments;
+using NSubstitute.ExceptionExtensions;
 
 namespace EnigmatryFinancialTests.ServiceTests
 {
     [TestClass]
     public class FinancialDocumentServiceTests : BaseTest
     {
+        // Test method created for purposes of showing subsititution and test mocking
         [TestMethod]
-        [ExpectedException(typeof(NotSupportedException))]
-        public async Task RetrieveDocument_InValidProductAsync()
+        [ExpectedException(typeof(BadHttpRequestException))]
+        public async Task RetrieveDocument_Substitute_ThrowsException()
         {
             using (_dbContext)
             {
-                FinancialDocumentService financialDocumentService = new FinancialDocumentService(Substitute.For<IProductService>(), Substitute.For<IFinancialDocumentRepository>());
-                _ = await financialDocumentService.RetrieveFinancialDocumentAsync(Guid.NewGuid(), Guid.NewGuid(), "unsupportedProduct").ConfigureAwait(false);
+                IFinancialDocumentRepository docRepo = Substitute.For<IFinancialDocumentRepository>();
+                var financialDocumentService = new FinancialDocumentService(docRepo, Substitute.For<ITransactionRepository>(), Substitute.For<IPropertyConfigRepository>());
+
+                docRepo.GetFinancialDocumentForDocId(Arg.Any<Guid>()).Throws(new BadHttpRequestException("", StatusCodes.Status403Forbidden));
+
+                await financialDocumentService
+                    .RetrieveFinancialDocumentAsync(Guid.NewGuid(), Guid.NewGuid(), string.Empty, CompanyTypeEnum.Small, string.Empty)
+                    .ConfigureAwait(false);
             }
         }
     }

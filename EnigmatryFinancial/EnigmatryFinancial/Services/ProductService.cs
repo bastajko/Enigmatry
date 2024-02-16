@@ -15,7 +15,7 @@ namespace EnigmatryFinancial.Services
         {
             if(! await _productRepository.IsProductSupported(productCode).ConfigureAwait(false))
             {
-                throw new BadHttpRequestException("Product is not supported", (int)HttpStatusCode.Forbidden);
+                throw new BadHttpRequestException("Product is not supported", StatusCodes.Status403Forbidden);
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using EnigmatryFinancial.Entities;
 using EnigmatryFinancial.Entities.Enums;
-using EnigmatryFinancial.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
 using System.Xml;
@@ -14,6 +13,7 @@ namespace EnigmatryFinancial.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<FinancialDocument> Documents { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<PropertyConfig> PropertyConfigs { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
         }
@@ -46,8 +46,9 @@ namespace EnigmatryFinancial.Data
                 .HasIndex(c => c.ClientVAT)
                 .IsUnique();
 
+#if !TEST_PROJECT
             SeedData(modelBuilder);
-
+#endif
             base.OnModelCreating(modelBuilder);
         }
 
@@ -72,6 +73,27 @@ namespace EnigmatryFinancial.Data
                 new Tenant { Id = tenantIds[2], Name = "TenantC", IsWhitelisted = false }
             );
 
+            _ = modelBuilder.Entity<PropertyConfig>().HasData(
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.AccountNumber, VisibilityType = VisibilityTypeEnum.Hashed },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.Currency, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.Balance, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Id, VisibilityType = VisibilityTypeEnum.Masked },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Amount, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Date, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Description, VisibilityType = VisibilityTypeEnum.Masked },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Category, VisibilityType = VisibilityTypeEnum.Unchanged },
+
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.AccountNumber, VisibilityType = VisibilityTypeEnum.Hashed },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.Currency, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.Balance, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.Status, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Id, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Amount, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Date, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Description, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Category, VisibilityType = VisibilityTypeEnum.Unchanged }
+                );
+
             Guid[] clientIds = new Guid[6];
             for (int i = 0; i < 6; i++)
             {
@@ -89,8 +111,8 @@ namespace EnigmatryFinancial.Data
             Guid[] financialDocIds = new Guid[2] { Guid.NewGuid(), Guid.NewGuid() };
 
             _ = modelBuilder.Entity<FinancialDocument>().HasData(
-                new FinancialDocument { Id = financialDocIds[0], TenantId = tenantIds[0], ClientId = clientIds[3], Type = "Invoice", Balance = 1000.00m, Currency = CurrencyEnum.USD, AccountNumber = "95867648" },
-                new FinancialDocument { Id = financialDocIds[1], TenantId = tenantIds[1], ClientId = clientIds[4], Type = "Receipt", Balance = 2500.00m, Currency = CurrencyEnum.EUR, AccountNumber = "93577094" }
+                new FinancialDocument { Id = financialDocIds[0], TenantId = tenantIds[0], ClientId = clientIds[3], Type = "Invoice", Balance = 1000.00m, Currency = CurrencyEnum.USD, AccountNumber = "95867648", Status = TaxReturnStatusEnum.Accepted },
+                new FinancialDocument { Id = financialDocIds[1], TenantId = tenantIds[1], ClientId = clientIds[4], Type = "Receipt", Balance = 2500.00m, Currency = CurrencyEnum.EUR, AccountNumber = "93577094", Status = TaxReturnStatusEnum.Finalized }
             );
 
             List<Transaction> transactions = new List<Transaction>();

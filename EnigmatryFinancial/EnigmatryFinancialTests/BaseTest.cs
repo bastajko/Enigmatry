@@ -1,14 +1,8 @@
 ﻿using EnigmatryFinancial.Data;
 using EnigmatryFinancial.Entities;
 using EnigmatryFinancial.Entities.Enums;
-using EnigmatryFinancial.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EnigmatryFinancialTests
 {
@@ -16,6 +10,7 @@ namespace EnigmatryFinancialTests
     {
         protected AppDbContext _dbContext;
         protected Guid[] _tenantIds = [Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid()];
+        protected Guid[] _financialDocIds = [Guid.NewGuid(), Guid.NewGuid()];
 
         [TestInitialize]
         public void Setup()
@@ -27,19 +22,40 @@ namespace EnigmatryFinancialTests
             _dbContext = new AppDbContext(options);
             _dbContext.Database.OpenConnection();
             _dbContext.Database.EnsureCreated();
-            /*
+            
             var productList = new List<Product>
             {
                 new Product { Id = Guid.NewGuid(), Name = "ProductA", ProductCode = "ProductA" },
                 new Product { Id = Guid.NewGuid(), Name = "ProductB", ProductCode = "ProductB" }
             };
-            */
 
             List<Tenant> tenants = new List<Tenant>
             {
                 new Tenant { Id = _tenantIds[0], Name = "Tenant1", IsWhitelisted = true },
                 new Tenant { Id = _tenantIds[1], Name = "Tenant2", IsWhitelisted = true },
                 new Tenant { Id = _tenantIds[2], Name = "Tenant3", IsWhitelisted = false }
+            };
+
+            List<PropertyConfig> propertyConfigs = new List<PropertyConfig>
+            {
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.AccountNumber, VisibilityType = VisibilityTypeEnum.Hashed },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.Currency, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.Balance, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Id, VisibilityType = VisibilityTypeEnum.Masked },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Amount, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Date, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Description, VisibilityType = VisibilityTypeEnum.Masked },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductA", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Category, VisibilityType = VisibilityTypeEnum.Unchanged },
+
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.AccountNumber, VisibilityType = VisibilityTypeEnum.Hashed },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.Currency, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.Balance, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Document, PropertyName = PropertyEnum.Status, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Id, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Amount, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Date, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Description, VisibilityType = VisibilityTypeEnum.Unchanged },
+                    new PropertyConfig { Id = Guid.NewGuid(), ProductCode = "ProductB", EntityName = EntityEnum.Transaction, PropertyName = PropertyEnum.Category, VisibilityType = VisibilityTypeEnum.Unchanged }
             };
 
             Guid[] clientIds = new Guid[6];
@@ -57,12 +73,10 @@ namespace EnigmatryFinancialTests
                 new Client { Id = clientIds[5], TenantId = _tenantIds[1], Name = "Client6", ClientVAT = "803258147", RegistrationNumber = "SFK678", CompanyType = CompanyTypeEnum.Large, IsWhitelisted = true }
             };
 
-            Guid[] financialDocIds = [Guid.NewGuid(), Guid.NewGuid()];
-
             List<FinancialDocument> financialDocs = new List<FinancialDocument>()
             {
-                new FinancialDocument { Id = financialDocIds[0], TenantId = _tenantIds[0], ClientId = clientIds[3], Type = "Invoice", Balance = 1000.00m, Currency = "USD", AccountNumber = "95867648" },
-                new FinancialDocument { Id = financialDocIds[1], TenantId = _tenantIds[1], ClientId = clientIds[4], Type = "Receipt", Balance = 2500.00m, Currency = "EUR", AccountNumber = "93577094" }
+                new FinancialDocument { Id = _financialDocIds[0], TenantId = _tenantIds[0], ClientId = clientIds[3], Type = "Invoice", Balance = 1000.00m, Currency = CurrencyEnum.USD, AccountNumber = "95867648" },
+                new FinancialDocument { Id = _financialDocIds[1], TenantId = _tenantIds[1], ClientId = clientIds[4], Type = "Receipt", Balance = 2500.00m, Currency = CurrencyEnum.EUR, AccountNumber = "93577094" }
             };
 
             List<Transaction> transactions = new List<Transaction>();
@@ -85,7 +99,7 @@ namespace EnigmatryFinancialTests
                     Date = date,
                     Description = descriptions[random.Next(descriptions.Length)],
                     Category = categories[random.Next(categories.Length)],
-                    FinancialDocumentId = financialDocIds[random.Next(financialDocIds.Length)],
+                    FinancialDocumentId = _financialDocIds[random.Next(_financialDocIds.Length)],
                 };
 
                 // Add transaction to the list

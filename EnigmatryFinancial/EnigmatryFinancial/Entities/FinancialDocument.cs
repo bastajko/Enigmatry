@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using EnigmatryFinancial.Entities.Enums;
 
-namespace EnigmatryFinancial.Models
+namespace EnigmatryFinancial.Entities
 {
     public class FinancialDocument : BaseEntity
     {
@@ -27,6 +27,10 @@ namespace EnigmatryFinancial.Models
 
         [JsonPropertyName("currency")]
         public CurrencyEnum Currency { get; set; } = CurrencyEnum.Undefined;
+
+
+        [JsonPropertyName("taxReturnStatus")]
+        public TaxReturnStatusEnum Status { get; set; } = TaxReturnStatusEnum.NotStarted;
 
         // Navigation properties
 

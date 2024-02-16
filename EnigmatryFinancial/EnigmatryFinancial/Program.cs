@@ -2,14 +2,15 @@ using EnigmatryFinancial.Data;
 using EnigmatryFinancial.Middlewares;
 using EnigmatryFinancial.Repositories;
 using EnigmatryFinancial.Services;
+using EnigmatryFinancial.Swagger;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -27,6 +28,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add service registration
 
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IPropertyConfigRepository, PropertyConfigRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IFinancialDocumentRepository, FinancialDocumentRepository>();
 builder.Services.AddScoped<ITenantRepository, TenantRepository>();
@@ -36,11 +39,19 @@ builder.Services.AddScoped<ITenantService, TenantService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IFinancialDocumentService, FinancialDocumentService>();
 builder.Services.AddScoped<IFinancialDocumentRetrievalService, FinancialDocumentRetrievalService>();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+
+    // Add a custom header to requests made by Swagger UI
+    c.OperationFilter<AddTenantIdHeaderParameter>();
+});
 
 var app = builder.Build();
 
-// TODO: add comment about middleware usage
-// app.UseMiddleware<ProductCheckMiddleware>();
+// This can be also some common properties middleware, but for this api we only have tenantId
+app.UseMiddleware<TenantIdMiddleware>();
+// Also I could add tenant whitelisting here, but because of the document specification, I called it in controller
 // app.UseMiddleware<TenantWhitelistingMiddleware>();
 
 // Configure the HTTP request pipeline.

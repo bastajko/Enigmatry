@@ -3,6 +3,7 @@
     public enum VisibilityTypeEnum
     {
         Unchanged,
-        Hashed
+        Hashed,
+        Masked
     }
 }

@@ -18,7 +18,7 @@ namespace EnigmatryFinancial.Services
             {
                 if(!(await _tenantRepository.IsTenantWhitelisted(tenantId).ConfigureAwait(false)))
                 {
-                    throw new BadHttpRequestException("Tenant is not whitelisted", (int)HttpStatusCode.Forbidden);
+                    throw new BadHttpRequestException("Tenant is not whitelisted", StatusCodes.Status403Forbidden);
                 }
             }
             catch (Exception ex)

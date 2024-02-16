@@ -1,5 +1,4 @@
 ﻿using EnigmatryFinancial.Entities.Enums;
-using EnigmatryFinancial.Models;
 using EnigmatryFinancial.Utils;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

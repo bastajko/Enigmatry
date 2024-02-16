@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EnigmatryFinancialTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2b5aef77e3b80a923091f97abbd0bca711a96d42")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4cc9610354c4c5f4b0aea4d2137a43042ecbe26b")]
 [assembly: System.Reflection.AssemblyProductAttribute("EnigmatryFinancialTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EnigmatryFinancialTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

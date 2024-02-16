@@ -1,4 +1,5 @@
 ﻿using EnigmatryFinancial.Services;
+using System.Text;
 
 namespace EnigmatryFinancial.Middlewares
 {
@@ -18,8 +19,9 @@ namespace EnigmatryFinancial.Middlewares
             // Extract tenantId from the request
             if (!Guid.TryParse(context.Request.Query["tenantId"], out Guid tenantId))
             {
-                // TODO: Add logging
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                context.Response.ContentType = "text/plain; charset=utf-8";
+                await context.Response.WriteAsync("Tenant is not whitelisted.", Encoding.UTF8);
                 return;
             }
 

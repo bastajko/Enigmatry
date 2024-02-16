@@ -17,13 +17,5 @@ namespace EnigmatryFinancial.Repositories
         {
             return await _context.Products.AnyAsync(p => p.ProductCode == productCode).ConfigureAwait(false);
         }
-
-        public List<string> GetConfigurationsForEntity(string productCode, string entityName)
-        {
-            return _context.Products
-                .Where(pc => pc.ProductCode == productCode && pc.EntityName == entityName && pc.IsRetrieved)
-                .Select(pc => pc.PropertyName)
-                .ToList();
-        }
     }
 }

@@ -4,8 +4,9 @@ namespace EnigmatryFinancial.Entities
 {
     public class PropertyConfig : BaseEntity
     {
-        public string EntityName { get; set; } = string.Empty;
-        public string PropertyName { get; set; } = string.Empty;
+        public required string ProductCode { get; set; }
+        public EntityEnum EntityName { get; set; }
+        public PropertyEnum PropertyName { get; set; }
         public VisibilityTypeEnum VisibilityType { get; set; }
     }
 }

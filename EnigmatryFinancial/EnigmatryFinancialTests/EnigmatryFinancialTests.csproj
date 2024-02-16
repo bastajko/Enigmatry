@@ -7,6 +7,7 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
+	<DefineConstants>TEST_PROJECT</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,10 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EnigmatryFinancial\EnigmatryFinancial.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ControllerTests\" />
   </ItemGroup>
 
 </Project>

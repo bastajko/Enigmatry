@@ -14,15 +14,13 @@ namespace EnigmatryFinancial.Repositories
             _context = context;
         }
 
-        public Task<bool> IsClientIdWhitelisted(Guid tenantId, string clientId)
+        public Task<bool> IsClientIdWhitelisted(Guid tenantId, Guid clientId)
         {
-            // TODO: Change Guid.Parse part
-            return _context.Clients.AnyAsync(c => c.TenantId == tenantId && c.Id == Guid.Parse(clientId) && c.IsWhitelisted);
+            return _context.Clients.AnyAsync(c => c.TenantId == tenantId && c.Id == clientId && c.IsWhitelisted);
         }
 
         public async Task<(Guid clientId, string clientVat)> GetClientIdAndClientVatAsync(Guid tenantId, Guid documentId)
         {
-            // TODO: change this
             try
             {
                 var clientDetails = await _context.Documents
@@ -35,7 +33,7 @@ namespace EnigmatryFinancial.Repositories
             }
             catch(NullReferenceException)
             {
-                throw new BadHttpRequestException("Not able to retrieve Client Details", (int)HttpStatusCode.NotFound);
+                throw new BadHttpRequestException($"Not able to retrieve Client Details for tenantId: {tenantId} and documentId: {documentId}", StatusCodes.Status404NotFound);
             }
         }
 
@@ -47,7 +45,7 @@ namespace EnigmatryFinancial.Repositories
 
             if(clientDetails == null)
             {
-                throw new BadHttpRequestException($"Not able to find client for client vat: {clientVat}", (int)HttpStatusCode.NotFound);
+                throw new BadHttpRequestException($"Not able to find client for client vat: {clientVat}", StatusCodes.Status404NotFound);
             }
 
             return (clientDetails.CompanyType, clientDetails.RegistrationNumber);

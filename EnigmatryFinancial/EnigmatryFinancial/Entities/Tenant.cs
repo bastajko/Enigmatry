@@ -1,5 +1,4 @@
-﻿using EnigmatryFinancial.Models;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace EnigmatryFinancial.Entities
 {
