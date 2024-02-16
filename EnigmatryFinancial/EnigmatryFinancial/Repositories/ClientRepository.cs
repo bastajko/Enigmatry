@@ -1,5 +1,5 @@
 ﻿using EnigmatryFinancial.Data;
-using EnigmatryFinancial.Entities;
+using EnigmatryFinancial.Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 

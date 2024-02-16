@@ -1,5 +1,6 @@
 ﻿using EnigmatryFinancial.Data;
 using EnigmatryFinancial.Entities;
+using EnigmatryFinancial.Entities.Enums;
 using EnigmatryFinancial.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -26,18 +27,19 @@ namespace EnigmatryFinancialTests
             _dbContext = new AppDbContext(options);
             _dbContext.Database.OpenConnection();
             _dbContext.Database.EnsureCreated();
-
+            /*
             var productList = new List<Product>
             {
                 new Product { Id = Guid.NewGuid(), Name = "ProductA", ProductCode = "ProductA" },
                 new Product { Id = Guid.NewGuid(), Name = "ProductB", ProductCode = "ProductB" }
             };
+            */
 
             List<Tenant> tenants = new List<Tenant>
             {
-                new Tenant { Id = _tenantIds[0], Name = "TenantA", IsWhitelisted = true },
-                new Tenant { Id = _tenantIds[1], Name = "TenantB", IsWhitelisted = true },
-                new Tenant { Id = _tenantIds[2], Name = "TenantC", IsWhitelisted = false }
+                new Tenant { Id = _tenantIds[0], Name = "Tenant1", IsWhitelisted = true },
+                new Tenant { Id = _tenantIds[1], Name = "Tenant2", IsWhitelisted = true },
+                new Tenant { Id = _tenantIds[2], Name = "Tenant3", IsWhitelisted = false }
             };
 
             Guid[] clientIds = new Guid[6];
@@ -47,12 +49,12 @@ namespace EnigmatryFinancialTests
             }
             List<Client> clients = new List<Client>
             {
-                new Client { Id = clientIds[0], TenantId = _tenantIds[0], Name = "ClientA", ClientVAT = "123456789", RegistrationNumber = "ABC123", CompanyType = CompanyTypeEnum.Small },
-                new Client { Id = clientIds[1], TenantId = _tenantIds[1], Name = "ClientB", ClientVAT = "987654321", RegistrationNumber = "XYZ456", CompanyType = CompanyTypeEnum.Small },
-                new Client { Id = clientIds[2], TenantId = _tenantIds[2], Name = "ClientC", ClientVAT = "246813579", RegistrationNumber = "DEF789", CompanyType = CompanyTypeEnum.Medium },
-                new Client { Id = clientIds[3], TenantId = _tenantIds[0], Name = "ClientD", ClientVAT = "654321987", RegistrationNumber = "GHI012", CompanyType = CompanyTypeEnum.Medium },
-                new Client { Id = clientIds[4], TenantId = _tenantIds[1], Name = "ClientE", ClientVAT = "135792468", RegistrationNumber = "JKL345", CompanyType = CompanyTypeEnum.Large },
-                new Client { Id = clientIds[5], TenantId = _tenantIds[1], Name = "ClientF", ClientVAT = "369258147", RegistrationNumber = "MNO678", CompanyType = CompanyTypeEnum.Large }
+                new Client { Id = clientIds[0], TenantId = _tenantIds[0], Name = "Client1", ClientVAT = "321456789", RegistrationNumber = "IJK123", CompanyType = CompanyTypeEnum.Small, IsWhitelisted = true },
+                new Client { Id = clientIds[1], TenantId = _tenantIds[1], Name = "Client2", ClientVAT = "789650321", RegistrationNumber = "PRS456", CompanyType = CompanyTypeEnum.Small, IsWhitelisted = true },
+                new Client { Id = clientIds[2], TenantId = _tenantIds[2], Name = "Client3", ClientVAT = "642813579", RegistrationNumber = "LFT789", CompanyType = CompanyTypeEnum.Medium, IsWhitelisted = true },
+                new Client { Id = clientIds[3], TenantId = _tenantIds[0], Name = "Client4", ClientVAT = "113320987", RegistrationNumber = "JPP012", CompanyType = CompanyTypeEnum.Medium, IsWhitelisted = true },
+                new Client { Id = clientIds[4], TenantId = _tenantIds[1], Name = "Client5", ClientVAT = "721792468", RegistrationNumber = "HRS345", CompanyType = CompanyTypeEnum.Large, IsWhitelisted = true },
+                new Client { Id = clientIds[5], TenantId = _tenantIds[1], Name = "Client6", ClientVAT = "803258147", RegistrationNumber = "SFK678", CompanyType = CompanyTypeEnum.Large, IsWhitelisted = true }
             };
 
             Guid[] financialDocIds = [Guid.NewGuid(), Guid.NewGuid()];

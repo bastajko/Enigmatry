@@ -1,4 +1,5 @@
 ﻿using EnigmatryFinancial.Entities;
+using EnigmatryFinancial.Entities.Enums;
 using EnigmatryFinancial.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection.Emit;
@@ -45,7 +46,7 @@ namespace EnigmatryFinancial.Data
                 .HasIndex(c => c.ClientVAT)
                 .IsUnique();
 
-            // SeedData(modelBuilder);
+            SeedData(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
         }
@@ -77,19 +78,19 @@ namespace EnigmatryFinancial.Data
                 clientIds[i] = Guid.NewGuid();
             }
             _ = modelBuilder.Entity<Client>().HasData(
-                new Client { Id = clientIds[0], TenantId = tenantIds[0], Name = "ClientA", ClientVAT = "123456789", RegistrationNumber = "ABC123", CompanyType = CompanyTypeEnum.Small },
-                new Client { Id = clientIds[1], TenantId = tenantIds[1], Name = "ClientB", ClientVAT = "987654321", RegistrationNumber = "XYZ456", CompanyType = CompanyTypeEnum.Small },
-                new Client { Id = clientIds[2], TenantId = tenantIds[2], Name = "ClientC", ClientVAT = "246813579", RegistrationNumber = "DEF789", CompanyType = CompanyTypeEnum.Medium },
-                new Client { Id = clientIds[3], TenantId = tenantIds[0], Name = "ClientD", ClientVAT = "654321987", RegistrationNumber = "GHI012", CompanyType = CompanyTypeEnum.Medium },
-                new Client { Id = clientIds[4], TenantId = tenantIds[1], Name = "ClientE", ClientVAT = "135792468", RegistrationNumber = "JKL345", CompanyType = CompanyTypeEnum.Large },
-                new Client { Id = clientIds[5], TenantId = tenantIds[1], Name = "ClientF", ClientVAT = "369258147", RegistrationNumber = "MNO678", CompanyType = CompanyTypeEnum.Large }
+                new Client { Id = clientIds[0], TenantId = tenantIds[0], Name = "ClientA", ClientVAT = "123456789", RegistrationNumber = "ABC123", CompanyType = CompanyTypeEnum.Small, IsWhitelisted = true },
+                new Client { Id = clientIds[1], TenantId = tenantIds[1], Name = "ClientB", ClientVAT = "987654321", RegistrationNumber = "XYZ456", CompanyType = CompanyTypeEnum.Small, IsWhitelisted = true },
+                new Client { Id = clientIds[2], TenantId = tenantIds[2], Name = "ClientC", ClientVAT = "246813579", RegistrationNumber = "DEF789", CompanyType = CompanyTypeEnum.Medium, IsWhitelisted = true },
+                new Client { Id = clientIds[3], TenantId = tenantIds[0], Name = "ClientD", ClientVAT = "654321987", RegistrationNumber = "GHI012", CompanyType = CompanyTypeEnum.Medium, IsWhitelisted = true },
+                new Client { Id = clientIds[4], TenantId = tenantIds[1], Name = "ClientE", ClientVAT = "135792468", RegistrationNumber = "JKL345", CompanyType = CompanyTypeEnum.Large, IsWhitelisted = true },
+                new Client { Id = clientIds[5], TenantId = tenantIds[1], Name = "ClientF", ClientVAT = "369258147", RegistrationNumber = "MNO678", CompanyType = CompanyTypeEnum.Large, IsWhitelisted = true }
             );
 
             Guid[] financialDocIds = new Guid[2] { Guid.NewGuid(), Guid.NewGuid() };
 
             _ = modelBuilder.Entity<FinancialDocument>().HasData(
-                new FinancialDocument { Id = financialDocIds[0], TenantId = tenantIds[0], ClientId = clientIds[3], Type = "Invoice", Balance = 1000.00m, Currency = "USD", AccountNumber = "95867648" },
-                new FinancialDocument { Id = financialDocIds[1], TenantId = tenantIds[1], ClientId = clientIds[4], Type = "Receipt", Balance = 2500.00m, Currency = "EUR", AccountNumber = "93577094" }
+                new FinancialDocument { Id = financialDocIds[0], TenantId = tenantIds[0], ClientId = clientIds[3], Type = "Invoice", Balance = 1000.00m, Currency = CurrencyEnum.USD, AccountNumber = "95867648" },
+                new FinancialDocument { Id = financialDocIds[1], TenantId = tenantIds[1], ClientId = clientIds[4], Type = "Receipt", Balance = 2500.00m, Currency = CurrencyEnum.EUR, AccountNumber = "93577094" }
             );
 
             List<Transaction> transactions = new List<Transaction>();

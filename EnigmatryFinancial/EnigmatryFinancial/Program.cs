@@ -27,8 +27,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add service registration
 
-builder.Services.AddScoped<IFinancialDocumentRepository, FinancialDocumentRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IFinancialDocumentRepository, FinancialDocumentRepository>();
 builder.Services.AddScoped<ITenantRepository, TenantRepository>();
 builder.Services.AddScoped<IClientRepository, ClientRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();

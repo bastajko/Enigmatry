@@ -1,4 +1,4 @@
-﻿using EnigmatryFinancial.Entities;
+﻿using EnigmatryFinancial.Entities.Enums;
 using EnigmatryFinancial.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Net;

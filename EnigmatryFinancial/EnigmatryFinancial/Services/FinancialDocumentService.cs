@@ -1,6 +1,7 @@
 ﻿using EnigmatryFinancial.Models.Response;
 using EnigmatryFinancial.Repositories;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace EnigmatryFinancial.Services
 {
@@ -16,6 +17,12 @@ namespace EnigmatryFinancial.Services
         public async Task<string> RetrieveFinancialDocumentAsync(Guid tenantId, Guid documentId, string productCode)
         {
             FinancialDocumentData returnDoc;
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve,
+            };
+            string json = JsonSerializer.Serialize(_financialDocumentRepository.RetrieveEntity(documentId, "Document", productCode), options);
+            /*
 
             // Fetch the financial document based on the product code
             switch (productCode)
@@ -33,8 +40,9 @@ namespace EnigmatryFinancial.Services
                     // TODO: Change type of exception
                     throw new NotSupportedException($"Product with code '{productCode}' is not supported.");
             }
-
-            return JsonSerializer.Serialize(returnDoc);
+            */
+            //return JsonSerializer.Serialize(returnDoc);
+            return json;
         }
     }
 }

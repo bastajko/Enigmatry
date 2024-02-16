@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using System.Text.Json;
-using EnigmatryFinancial.Entities;
+using EnigmatryFinancial.Entities.Enums;
 
 namespace EnigmatryFinancial.Utils
 {

@@ -1,4 +1,4 @@
-﻿namespace EnigmatryFinancial.Entities
+﻿namespace EnigmatryFinancial.Entities.Enums
 {
     public enum CompanyTypeEnum
     {

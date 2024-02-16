@@ -1,9 +1,7 @@
 ﻿using EnigmatryFinancial.Models.Request;
-using EnigmatryFinancial.Models.Response;
 using EnigmatryFinancial.Services;
 using EnigmatryFinancial.Utils;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace EnigmatryFinancial.Controllers
 {
@@ -47,7 +45,7 @@ namespace EnigmatryFinancial.Controllers
             {
                 // TODO: Check if status code needs to be changed.
                 this._logger.LogError(ex.Message);
-                return StatusCode((int)HttpStatusCode.InternalServerError, "An error occurred while processing the request.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while processing the request.");
             }
         }
     }

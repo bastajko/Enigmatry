@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using EnigmatryFinancial.Entities.Enums;
 
 namespace EnigmatryFinancial.Models
 {
@@ -25,7 +26,7 @@ namespace EnigmatryFinancial.Models
         public decimal Balance { get; set; }
 
         [JsonPropertyName("currency")]
-        public string Currency { get; set; } = string.Empty; // This should be enum, but I don't have time
+        public CurrencyEnum Currency { get; set; } = CurrencyEnum.Undefined;
 
         // Navigation properties
 

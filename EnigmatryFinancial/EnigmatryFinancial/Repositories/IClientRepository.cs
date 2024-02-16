@@ -1,4 +1,4 @@
-﻿using EnigmatryFinancial.Entities;
+﻿using EnigmatryFinancial.Entities.Enums;
 
 namespace EnigmatryFinancial.Repositories
 {
