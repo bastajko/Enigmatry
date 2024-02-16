@@ -1,5 +1,7 @@
 I was trying to follow the document specifications strictly.
 
+Apart from specification I created middleware which is retrieving header property that should be common for all api's, and that's tenantId.
+
 I created services for the main logic, and repositories for data acces layer.
 
 I didn't create Generic Repository because I consider it's not necessary for this small project.
