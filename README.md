@@ -14,4 +14,7 @@ For that reason my PropertyVisibility enum has Masked property also (not like sp
 
 I added a few test cases where I just tried to show different techniques of testing.
 
+I used sqlite for dev purposes since the focus is on code.
+I wouldn't use it in a real world scenario.
+
 For any questions contact me at sbastajic@gmail.com
